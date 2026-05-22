@@ -1,4 +1,4 @@
-# Indian Used Car Market — Pricing & Demand Intelligence
+# Used Car Market — Pricing & Demand Intelligence
 
 End-to-end project: notebook analysis, **JSON** artifacts, **Streamlit** app, and **HTML** report.
 
