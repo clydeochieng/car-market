@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indian Used Car Market — Report</title>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; background: #f8fafc; color: #0f172a; max-width: 1100px; }
+    h1 { margin-bottom: 0.25rem; }
+    .muted { color: #64748b; }
+    .steps { background: #eff6ff; border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0; }
+    .steps ol { margin: 0.5rem 0 0 1.25rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .card { background: #fff; border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 1rem; }
+    .metric { font-size: 1.5rem; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #e2e8f0; }
+    .charts img { max-width: 100%; border-radius: 8px; margin-bottom: 1rem; }
+    .err { color: #b91c1c; background: #fef2f2; padding: 1rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1 id="title">Indian Used Car Market</h1>
+  <p class="muted" id="subtitle">Loading…</p>
+
+  <div class="steps" id="howto" hidden>
+    <strong>How to view this page</strong>
+    <ol>
+      <li><code>pip install -r requirements.txt</code></li>
+      <li><code>python train_pipeline.py</code> (creates <code>dashboard_data.json</code>)</li>
+      <li><code>python -m http.server 8000</code> in this folder</li>
+      <li>Open <a href="http://localhost:8000/dashboard.html">http://localhost:8000/dashboard.html</a></li>
+    </ol>
+  </div>
+
+  <div class="grid" id="summary-cards"></div>
+  <div class="grid" id="metrics-cards"></div>
+
+  <div class="card">
+    <h2>Model comparison (test set)</h2>
+    <div id="chart-rmse"></div>
+  </div>
+
+  <div class="card">
+    <h2>Top XGBoost features</h2>
+    <table id="features-table">
+      <thead><tr><th>Feature</th><th>Importance</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card charts" id="notebook-charts" hidden>
+    <h2>Notebook charts</h2>
+    <div id="chart-images"></div>
+  </div>
+
+  <script>
+    async function loadDashboard() {
+      const r = await fetch("dashboard_data.json");
+      if (!r.ok) {
+        document.getElementById("howto").hidden = false;
+        throw new Error(
+          "dashboard_data.json missing — run: python train_pipeline.py"
+        );
+      }
+      return r.json();
+    }
+
+    function inr(n) {
+      return "₹" + Math.round(n).toLocaleString("en-IN");
+    }
+
+    (async () => {
+      try {
+        const data = await loadDashboard();
+        const proj = data.project || {};
+        const summary = data.dataset_summary || {};
+        const metrics = data.model_metrics || {};
+        const meta = data.feature_metadata || {};
+        const m = metrics.test_metrics || {};
+        const best = metrics.best_model || "";
+
+        document.getElementById("title").textContent =
+          proj.project_name || "Indian Used Car Market";
+        document.getElementById("subtitle").textContent =
+          (proj.dataset || "dataset") + " · " + (summary.rows || "?") + " listings";
+
+        document.getElementById("summary-cards").innerHTML = `
+          <div class="card"><div class="muted">Brands</div><div class="metric">${summary.brands ?? "—"}</div></div>
+          <div class="card"><div class="muted">Cities</div><div class="metric">${summary.cities ?? "—"}</div></div>
+          <div class="card"><div class="muted">Avg price</div><div class="metric">${inr(summary.avg_estimated_final_price || 0)}</div></div>
+          <div class="card"><div class="muted">Median days to sell</div><div class="metric">${summary.median_days_to_sell ?? "—"}</div></div>`;
+
+        document.getElementById("metrics-cards").innerHTML =
+          Object.entries(m).map(([name, v]) => `
+            <div class="card">
+              <div class="muted">${name}${name === best ? " ★ best" : ""}</div>
+              <div class="metric">R² ${(v.r2 * 100).toFixed(1)}%</div>
+              <div>RMSE ${inr(v.rmse)}</div>
+              <div>MAE ${inr(v.mae)}</div>
+            </div>`).join("");
+
+        const names = Object.keys(m);
+        Plotly.newPlot("chart-rmse", [{
+          x: names,
+          y: names.map(n => m[n].rmse),
+          type: "bar",
+          marker: { color: names.map(n => n === best ? "#16a34a" : "#3b82f6") }
+        }], { title: "RMSE by model (lower is better)", yaxis: { title: "INR" } });
+
+        const tbody = document.querySelector("#features-table tbody");
+        (meta.top_xgb_features || []).forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${row.feature}</td><td>${row.importance.toFixed(4)}</td>`;
+          tbody.appendChild(tr);
+        });
+
+        const imgs = data.chart_images || [];
+        if (imgs.length) {
+          const block = document.getElementById("notebook-charts");
+          block.hidden = false;
+          document.getElementById("chart-images").innerHTML = imgs.map(
+            f => `<figure><img src="outputs/${f}" alt="${f}" /><figcaption class="muted">${f}</figcaption></figure>`
+          ).join("");
+        }
+      } catch (e) {
+        document.body.insertAdjacentHTML("beforeend",
+          `<p class="err">${e.message}</p>`);
+      }
+    })();
+  </script>
+</body>
+</html>

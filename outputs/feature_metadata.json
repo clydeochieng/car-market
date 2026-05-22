@@ -1,0 +1,87 @@
+{
+  "target": "estimated_final_price",
+  "categorical_features": [
+    "brand",
+    "model",
+    "fuel_type",
+    "transmission",
+    "owner_type",
+    "city"
+  ],
+  "numeric_features": [
+    "year",
+    "km_driven",
+    "mileage",
+    "engine_cc",
+    "condition_rating",
+    "original_price",
+    "car_age",
+    "demand_score",
+    "brand_popularity_score",
+    "price_per_km",
+    "premium_car"
+  ],
+  "best_model": "RandomForest",
+  "top_xgb_features": [
+    {
+      "feature": "num__premium_car",
+      "importance": 0.37645426392555237
+    },
+    {
+      "feature": "num__price_per_km",
+      "importance": 0.3598809242248535
+    },
+    {
+      "feature": "num__original_price",
+      "importance": 0.14421775937080383
+    },
+    {
+      "feature": "num__year",
+      "importance": 0.03126073628664017
+    },
+    {
+      "feature": "cat__model_Fortuner",
+      "importance": 0.01573059894144535
+    },
+    {
+      "feature": "num__car_age",
+      "importance": 0.015641281381249428
+    },
+    {
+      "feature": "num__engine_cc",
+      "importance": 0.012662834487855434
+    },
+    {
+      "feature": "num__km_driven",
+      "importance": 0.01219750102609396
+    },
+    {
+      "feature": "cat__model_Scorpio",
+      "importance": 0.004656797740608454
+    },
+    {
+      "feature": "num__demand_score",
+      "importance": 0.0031223054975271225
+    },
+    {
+      "feature": "cat__city_Nagpur",
+      "importance": 0.0029989832546561956
+    },
+    {
+      "feature": "cat__model_Venue",
+      "importance": 0.002194649074226618
+    },
+    {
+      "feature": "cat__model_XUV700",
+      "importance": 0.0014185784384608269
+    },
+    {
+      "feature": "num__condition_rating",
+      "importance": 0.0013695992529392242
+    },
+    {
+      "feature": "num__mileage",
+      "importance": 0.0009023536695167422
+    }
+  ]
+}

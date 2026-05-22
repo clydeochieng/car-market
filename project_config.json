@@ -1,0 +1,38 @@
+{
+  "project_name": "Indian Used Car Market — Pricing & Demand Intelligence",
+  "dataset": "final_indian_used_car_market_dataset.csv",
+  "target_column": "estimated_final_price",
+  "focus_areas": [
+    "Exploratory Data Analysis",
+    "Price Prediction (Regression)",
+    "XGBoost & Ensemble Comparison",
+    "Market Segmentation",
+    "Depreciation & Resale Analytics",
+    "Interactive Dashboard"
+  ],
+  "recommended_models": [
+    "Linear Regression",
+    "Random Forest Regressor",
+    "XGBoost Regressor"
+  ],
+  "dashboard_sections": [
+    "Market Overview",
+    "Price by Brand & City",
+    "Depreciation & Condition",
+    "Model Performance",
+    "Price Predictor"
+  ],
+  "business_questions": [
+    "What drives final sale price for used cars in India?",
+    "How do brand, age, and mileage affect resale value?",
+    "Which cities show the highest average listing prices?",
+    "How long do cars typically take to sell?",
+    "Can we predict fair market price before listing?"
+  ],
+  "tech_stack": {
+    "analysis": ["Python", "Pandas", "NumPy"],
+    "visualization": ["Matplotlib", "Seaborn", "Plotly"],
+    "machine_learning": ["Scikit-learn", "XGBoost"],
+    "dashboarding": ["Streamlit"]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "project": {
+    "project_name": "Indian Used Car Market \u2014 Pricing & Demand Intelligence",
+    "dataset": "final_indian_used_car_market_dataset.csv",
+    "target_column": "estimated_final_price",
+    "focus_areas": [
+      "Exploratory Data Analysis",
+      "Price Prediction (Regression)",
+      "XGBoost & Ensemble Comparison",
+      "Market Segmentation",
+      "Depreciation & Resale Analytics",
+      "Interactive Dashboard"
+    ],
+    "recommended_models": [
+      "Linear Regression",
+      "Random Forest Regressor",
+      "XGBoost Regressor"
+    ],
+    "dashboard_sections": [
+      "Market Overview",
+      "Price by Brand & City",
+      "Depreciation & Condition",
+      "Model Performance",
+      "Price Predictor"
+    ],
+    "business_questions": [
+      "What drives final sale price for used cars in India?",
+      "How do brand, age, and mileage affect resale value?",
+      "Which cities show the highest average listing prices?",
+      "How long do cars typically take to sell?",
+      "Can we predict fair market price before listing?"
+    ],
+    "tech_stack": {
+      "analysis": [
+        "Python",
+        "Pandas",
+        "NumPy"
+      ],
+      "visualization": [
+        "Matplotlib",
+        "Seaborn",
+        "Plotly"
+      ],
+      "machine_learning": [
+        "Scikit-learn",
+        "XGBoost"
+      ],
+      "dashboarding": [
+        "Streamlit"
+      ]
+    }
+  },
+  "dataset_summary": {
+    "rows": 200,
+    "brands": 8,
+    "cities": 8,
+    "avg_estimated_final_price": 640912.775,
+    "median_days_to_sell": 32.5
+  },
+  "model_metrics": {
+    "test_metrics": {
+      "Ridge": {
+        "rmse": 129610.83806727336,
+        "mae": 97269.01035137955,
+        "r2": 0.9138907387707973,
+        "mape_pct": 34.91987149523282
+      },
+      "RandomForest": {
+        "rmse": 66032.28439278498,
+        "mae": 49698.53053244046,
+        "r2": 0.9776498794650504,
+        "mape_pct": 8.81695260599442
+      },
+      "XGBoost": {
+        "rmse": 66744.62854792137,
+        "mae": 47554.90234375,
+        "r2": 0.9771650433540344,
+        "mape_pct": 8.211021065996674
+      }
+    },
+    "best_model": "RandomForest",
+    "train_rows": 160,
+    "test_rows": 40
+  },
+  "feature_metadata": {
+    "target": "estimated_final_price",
+    "categorical_features": [
+      "brand",
+      "model",
+      "fuel_type",
+      "transmission",
+      "owner_type",
+      "city"
+    ],
+    "numeric_features": [
+      "year",
+      "km_driven",
+      "mileage",
+      "engine_cc",
+      "condition_rating",
+      "original_price",
+      "car_age",
+      "demand_score",
+      "brand_popularity_score",
+      "price_per_km",
+      "premium_car"
+    ],
+    "best_model": "RandomForest",
+    "top_xgb_features": [
+      {
+        "feature": "num__premium_car",
+        "importance": 0.37645426392555237
+      },
+      {
+        "feature": "num__price_per_km",
+        "importance": 0.3598809242248535
+      },
+      {
+        "feature": "num__original_price",
+        "importance": 0.14421775937080383
+      },
+      {
+        "feature": "num__year",
+        "importance": 0.03126073628664017
+      },
+      {
+        "feature": "cat__model_Fortuner",
+        "importance": 0.01573059894144535
+      },
+      {
+        "feature": "num__car_age",
+        "importance": 0.015641281381249428
+      },
+      {
+        "feature": "num__engine_cc",
+        "importance": 0.012662834487855434
+      },
+      {
+        "feature": "num__km_driven",
+        "importance": 0.01219750102609396
+      },
+      {
+        "feature": "cat__model_Scorpio",
+        "importance": 0.004656797740608454
+      },
+      {
+        "feature": "num__demand_score",
+        "importance": 0.0031223054975271225
+      },
+      {
+        "feature": "cat__city_Nagpur",
+        "importance": 0.0029989832546561956
+      },
+      {
+        "feature": "cat__model_Venue",
+        "importance": 0.002194649074226618
+      },
+      {
+        "feature": "cat__model_XUV700",
+        "importance": 0.0014185784384608269
+      },
+      {
+        "feature": "num__condition_rating",
+        "importance": 0.0013695992529392242
+      },
+      {
+        "feature": "num__mileage",
+        "importance": 0.0009023536695167422
+      }
+    ]
+  },
+  "chart_images": []
+}
